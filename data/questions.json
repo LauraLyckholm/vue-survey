@@ -1,0 +1,26 @@
+[
+    {
+        "question": "Is it warm or cold out right now?",
+        "answers": [
+            "Warm",
+            "Cold"
+        ],
+        "id": 1
+    },
+    {
+        "question": "What is your current mood",
+        "answers": [
+            "Good",
+            "Bad"
+        ],
+        "id": 2
+    },
+    {
+        "question": "Are you alone or around other people",
+        "answers": [
+            "Alone",
+            "Around people"
+        ],
+        "id": 3
+    }
+]
