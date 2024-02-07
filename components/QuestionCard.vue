@@ -9,6 +9,10 @@ const answers = ref([]);
 const selectedAnswer = ref('');
 const errorMessage = ref('');
 
+watch(selectedAnswer, () => {
+    errorMessage.value = '';
+});
+
 // Increments the current step by 1, if the current step is less than the total number of questions, otherwise navigates to the results page
 const incrementStep = () => {
     if (selectedAnswer.value === '') {
@@ -27,28 +31,74 @@ const incrementStep = () => {
     }
 }
 
+const restartQuiz = () => {
+    currentStep.value = 0;
+    answers.value = [];
+}
+
 </script>
 
 <template>
-    <div v-if="currentStep < questions.length">
-        <h1>Welcome to the state survey!</h1>
-
+    <section v-if="currentStep < questions.length">
         <article>
             <h2>Question {{ questions[currentStep].id }}</h2>
             <form>
                 <p>{{ questions[currentStep].question }}</p>
-                <div v-for="answer in questions[currentStep].answers">
+                <div class="radio-buttons" v-for="answer in questions[currentStep].answers">
                     <input type="radio" :id="answer.toLowerCase()" :value="answer.toLowerCase()" v-model="selectedAnswer" />
                     <label :for="answer.toLowerCase()">{{ answer }}</label>
                 </div>
             </form>
         </article>
-        <p v-if="errorMessage">{{ errorMessage }}</p>
+        <p class="error" v-if="errorMessage">{{ errorMessage }}</p>
         <button @click="incrementStep">Next question</button>
-    </div>
-    <div v-else>
-        <h2>Thank you for completing the survey!</h2>
-        <h3>Here are your answers:</h3>
-        <p v-for="answer in answers">{{ answer }}</p>
-    </div>
+    </section>
+    <section v-else>
+        <h3>Here is your current state</h3>
+        <p>It is {{ answers[0] }} outside, and your in a {{ answers[1] }} mood. That may be because you are {{ answers[2]
+        }}.
+        </p>
+        <button @click="restartQuiz">Restart</button>
+    </section>
 </template>
+
+<style lang="scss" scoped>
+section {
+    padding: 1rem;
+
+    .radio-buttons {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        justify-content: center;
+
+        input[type="radio"] {
+            margin: 0;
+        }
+
+        p {
+            line-height: 0;
+        }
+    }
+
+    button {
+        padding: 0.6rem 1rem;
+        border-radius: 20px;
+        border: none;
+        background: #7F27FF;
+        color: white;
+        font-size: 14px;
+
+        &:hover {
+            background: #9F70FD;
+            text-decoration: underline;
+            transform: scale(1.05);
+            transition: all 0.3s ease-in-out;
+        }
+    }
+
+    .error {
+        color: red;
+    }
+}
+</style>
