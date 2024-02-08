@@ -3,7 +3,7 @@
 const props = defineProps({
     heroText: String
 });
-console.log(props.heroText);
+
 </script>
 
 <template>
